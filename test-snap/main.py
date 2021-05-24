@@ -1,31 +1,29 @@
 from snap import snap
 
 
-def create_graph():
-    FILE_NAME = "ForestGraph"
+def draw(Graph):
+    labels = {}
+    for NI in Graph.Nodes():
+        labels[NI.GetId()] = str(NI.GetId())
+    Graph.DrawGViz(snap.gvlDot, "output.png", " ", labels)
 
-    # create a graph TNGraph
-    G1 = snap.TNGraph.New()
-    G1.AddNode(1)
-    G1.AddNode(5)
-    G1.AddNode(32)
-    G1.AddEdge(1, 5)
-    G1.AddEdge(5, 1)
-    G1.AddEdge(5, 32)
-    print(G1)
+    UGraph = snap.GenRndGnm(snap.TUNGraph, 10, 50)
+    labels = {}
+    for NI in UGraph.Nodes():
+        labels[NI.GetId()] = str(NI.GetId())
+    UGraph.DrawGViz(snap.gvlDot, "output.png", " ", labels)
 
-    # generate a network using Forest Fire model
-    G3 = snap.GenForestFire(1000, 0.35, 0.35)
-    # save and load binary
-    FOut = snap.TFOut(FILE_NAME + ".graph")
-    G3.Save(FOut)
-    FOut.Flush()
-    FIn = snap.TFIn(FILE_NAME + ".graph")
-    G4 = snap.TNGraph.Load(FIn)
-    # save and load from a text file
-    snap.SaveEdgeList(G4, FILE_NAME + ".txt", "Save as tab-separated list of edges")
-    G5 = snap.LoadEdgeList(snap.TNGraph, FILE_NAME + ".txt", 0, 1)
+    Network = snap.GenRndGnm(snap.TNEANet, 10, 50)
+    labels = {}
+    for NI in Network.Nodes():
+        labels[NI.GetId()] = str(NI.GetId())
+    Network.DrawGViz(snap.gvlDot, "output.png", " ", labels)
+
+
+def main():
+    G = snap.LoadEdgeListStr(snap.TNGraph, "Wiki-Vote.txt", 0, 1)
+    print("Number of Nodes: %d" % G.GetNodes())
 
 
 if __name__ == '__main__':
-    create_graph()
+    main()
