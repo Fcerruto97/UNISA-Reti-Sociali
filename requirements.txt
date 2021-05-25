@@ -1,1 +1,5 @@
 snap-stanford
+scipy~=1.5.4
+pandas~=1.1.2
+networkx~=2.5
+matplotlib~=3.3.2
