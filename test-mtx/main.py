@@ -2,7 +2,7 @@ from scipy.io import mmread
 
 
 def main():
-    a = mmread('test.mtx')
+    a = mmread('rec-amazon.mtx')
     print(a)
 
 
