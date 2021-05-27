@@ -5,11 +5,11 @@ from utils.io import read_mtx
 
 
 def main():
-    input_file = "rec-amazon.mtx"
-    mtx = read_mtx(input_file)
+    dataset = "dataset/rec-amazon.mtx"
+    mtx = read_mtx(dataset)
 
     g = snap.TUNGraph.New()
-    add_nodes(g, 0, 91813)
+    add_nodes(g, 1, 91813)
     add_edges(g, mtx)
 
 

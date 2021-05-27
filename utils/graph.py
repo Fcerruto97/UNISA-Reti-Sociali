@@ -23,11 +23,11 @@ def add_nodes(graph, start, stop):
 
 def add_edges(graph, mtx):
     """
-    Aggiunge gli archi a un grafo dove sono stati già aggiunti i nodi
+    Aggiunge gli archi a un grafo dove sono stati già aggiunti i nodi.
     :param graph: snap graph
-    :param mtx: scipy.sparse.coo_matrix
-    :return:
+    :param mtx: scipy.sparse.coo_matrix con primo nodo uguale a zero
+    :return: grafo a cui sono stati aggiunti gli archi. La numerazione parte da 1
     """
     for i, j, v in zip(mtx.row, mtx.col, mtx.data):
-        graph.AddEdge(int(i), int(j))
+        graph.AddEdge(int(i) + 1, int(j) + 1)
     return graph
