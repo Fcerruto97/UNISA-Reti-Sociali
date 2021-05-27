@@ -31,3 +31,7 @@ def add_edges(graph, mtx):
     for i, j, v in zip(mtx.row, mtx.col, mtx.data):
         graph.AddEdge(int(i) + 1, int(j) + 1)
     return graph
+
+
+def clone(graph):
+    return snap.ConvertGraph(type(graph), graph)
