@@ -1,15 +1,14 @@
+from utils.console import print_dict
 from utils.graph import clone
 from utils.io import load_mtx_graph
 
 
-def print_dict(d):
-    for k, v in d.items():
-        print(k, ":", v)
-
-
-def print_nodes_id(g):
-    for v in g:
-        print(v.GetId())
+def initialize_dicts(V, t, s, d, k, N):
+    for v in V:
+        s[v.GetId()] = 0
+        d[v.GetId()] = v.GetDeg()
+        k[v.GetId()] = t[v.GetId()]
+        N[v.GetId()] = get_neighborhood(v)
 
 
 def tpi(graph, t: dict):
@@ -22,35 +21,37 @@ def tpi(graph, t: dict):
     k = dict()
     N = dict()
 
-    for v in V:
-        s[v.GetId()] = 0
-        d[v.GetId()] = v.GetDeg()
-        k[v.GetId()] = t[v.GetId()]
-        N[v.GetId()] = get_neighborhood(v)
+    initialize_dicts(V, t, s, d, k, N)
 
     while not g_copy.Empty():
 
-        for v in g_copy.Nodes():
+        flag, node_id = check_case1(g_copy, k, d)
 
-            if k[v.GetId()] > d[v.GetId()]:  # case 1
-                s[v.GetId()] = s[v.GetId()] + k[v.GetId()] - d[v.GetId()]
-                k[v.GetId()] = d[v.GetId()]
+        if flag:  # case 1
+            s[node_id] = s[node_id] + k[node_id] - d[node_id]
+            k[node_id] = d[node_id]
 
-                if k[v.GetId()] == 0:
-                    g_copy.DelNode(v.GetId())
+            if k[node_id] == 0:
+                g_copy.DelNode(node_id)
 
-            else:  # case 2
-                argmaxdict = dict()
-                for x in g_copy.Nodes():
-                    argmaxdict[x.GetId()] = (k[x.GetId()] * (k[x.GetId()] + 1)) / (d[x.GetId()] * (d[x.GetId()] + 1))
+        else:  # case 2
+            argmax_dict = dict()
+            for x in g_copy.Nodes():
+                node_id = x.GetId()
+                argmax_dict[node_id] = (k[node_id] * (k[node_id] + 1)) / (d[node_id] * (d[node_id] + 1))
 
-                target_node_id = argmax_key_dict(argmaxdict)
+            target_node_id = argmax_key_dict(argmax_dict)
 
-                for u in N[target_node_id]:
-                    d[u] = d[u] - 1
-                    N[u] = N[u].remove(target_node_id)
+            for u in N[target_node_id]:
+                d[u] = d[u] - 1
+                N[u].remove(target_node_id)
 
-                g_copy.DelNode(target_node_id)
+            g_copy.DelNode(target_node_id)
+
+    # print("s =>", s)
+    # print("d => ", d)
+    # print("k => ", k)
+    # print("N => ", N)
     return s
 
 
@@ -58,16 +59,24 @@ def get_neighborhood(v) -> set:
     return set([e for e in v.GetOutEdges()])
 
 
-def test():
-    g = load_mtx_graph("../dataset/test-matrixmarket-general.mtx", 1, 4)
+def check_case1(g, k, d):
+    # inizializzazione dizionario flag
+    flag = {}
+    for v in g.Nodes():
+        flag[v.GetId()] = False
 
-    t = {}
-    for i in range(1, g.GetNodes() + 1):
-        t[i] = 1
+    # check sulla condizione k(v) > d(v) per ogni nodo
+    for v in g.Nodes():
+        if k[v.GetId()] > d[v.GetId()]:
+            flag[v.GetId()] = True
 
-    result = tpi(g, t)
+    # restituzione del primo nodo per cui k(v) > d(v) è vero
+    for k, _ in flag.items():
+        if flag[k]:
+            return True, k
 
-    print_dict(result)
+    # non esiste alcun nodo per il quale k(v) > d(v) è vero
+    return False, None
 
 
 def argmax_key_dict(d):
@@ -79,14 +88,36 @@ def argmax_key_dict(d):
     return max(d, key=d.get)
 
 
-def test_set():
-    l = [1, 2, 3]
-    a = set(l)
-    print(a)
-    a.remove(1)
-    print(a)
+def test_grafo_tss():
+    g = load_mtx_graph("../dataset/grafo-esempio-tss.mtx", 1, 8)
+
+    t = {}
+    for i in range(1, g.GetNodes() + 1):
+        t[i] = 3
+
+    # print("soglie:", t)
+    # draw(g, "test.png")
+
+    result = tpi(g, t)
+    print_dict(result)
+
+
+def test_paper_tpi():
+    g = load_mtx_graph("../dataset/grafo-esempio-tpi.mtx", 1, 7)
+
+    t = {
+        1: 1,
+        2: 1,
+        3: 1,
+        4: 1,
+        5: 1,
+        6: 6,
+        7: 6}
+
+    result = tpi(g, t)
+    print_dict(result)
 
 
 if __name__ == '__main__':
-    test()
-    # test_set()
+    # test_grafo_tss()
+    test_paper_tpi()
