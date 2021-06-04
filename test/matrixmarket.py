@@ -5,14 +5,14 @@ from utils.io import read_mtx
 
 
 def matrixmarket_general():
-    dataset = "../dataset/test-matrixmarket-general.mtx"
-    mtx = read_mtx(dataset)
+    dataset_name = "grafo-esempio-tss"
+    mtx = read_mtx("../dataset/" + dataset_name + ".mtx")
 
     g = snap.TUNGraph.New()
-    add_nodes(g, 1, 5)
+    add_nodes(g, 1, 8)
     add_edges(g, mtx)
 
-    draw(g, "../out/test-matrixmarket-general.png")
+    draw(g, "../out/" + dataset_name + ".png")
 
 
 if __name__ == '__main__':
