@@ -70,7 +70,7 @@ def exp_dd_static_threshold(dataset, num_of_nodes, threshold):
     print("Risultato medio:", sum(results.values()) / len(results.values()))
 
 
-def exp_dd_degree_proportional_threshold(dataset, num_of_nodes, i):
+def exp_dd_degree_proportional_threshold(dataset, num_of_nodes, threshold):
     mtx = read_mtx(dataset)
 
     edges_prob = generate_edges_prob(42, mtx)
@@ -79,7 +79,7 @@ def exp_dd_degree_proportional_threshold(dataset, num_of_nodes, i):
     for i in range(2, 12):
         g = dd_algorithm(mtx, num_of_nodes, edges_prob, time.time())
 
-        t = generate_degree_threshold(g, i)
+        t = generate_degree_threshold(g, threshold)
 
         result = tpi(g, t)
         results[i] = sum(result.values())
@@ -89,8 +89,8 @@ def exp_dd_degree_proportional_threshold(dataset, num_of_nodes, i):
 
 
 def main():
-    num_of_nodes = 15126
-    dataset = "dataset/socfb-Harvard1.mtx"
+    num_of_nodes = 2970
+    dataset = "dataset/socfb-Wellesley22.mtx"
 
     # exp_degree_proportional_threshold(dataset, num_of_nodes, 2)
     # exp_dd_static_threshold(dataset, num_of_nodes, 1)
