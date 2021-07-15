@@ -1,5 +1,4 @@
 import random
-import time
 
 from snap import snap
 
@@ -36,14 +35,14 @@ def add_edges(graph, mtx):
     return graph
 
 
-def add_edges_random(graph, mtx, edges_prob):
+def add_edges_random(graph, mtx, edges_prob, seed):
     """
     Aggiunge gli archi a un grafo dove sono stati già aggiunti i nodi.
     :param graph: snap graph
     :param mtx: scipy.sparse.coo_matrix con primo nodo uguale a zero
     :return: grafo a cui sono stati aggiunti gli archi. La numerazione parte da 1
     """
-    random.seed(time.time())
+    random.seed(seed)
     for i, j, v in zip(mtx.row, mtx.col, mtx.data):
         magicNumber = random.random()
         if magicNumber > edges_prob[str(int(i) + 1) + "," + str(int(j) + 1)]:

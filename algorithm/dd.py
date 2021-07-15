@@ -14,10 +14,10 @@ def generate_edges_prob(seed, mtx):
     return d
 
 
-def dd_algorithm(mtx, edges_prob):
+def dd_algorithm(mtx, num_of_nodes, edges_prob, seed):
     g = snap.TUNGraph.New()
-    add_nodes(g, 1, 8)
-    add_edges_random(g, mtx, edges_prob)
+    g = add_nodes(g, 1, num_of_nodes)
+    g = add_edges_random(g, mtx, edges_prob, seed)
     return g
 
 
@@ -26,7 +26,7 @@ def main():
     mtx = read_mtx(dataset)
 
     ht = generate_edges_prob(42, mtx)
-    g = dd_algorithm(mtx, ht)
+    g = dd_algorithm(mtx, 8, ht, 42)
     draw(g, "../out/" + "dd_example" + ".png")
 
 
