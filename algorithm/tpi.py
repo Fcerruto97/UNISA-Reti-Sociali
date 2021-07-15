@@ -23,7 +23,11 @@ def tpi(graph, t: dict):
 
     initialize_dicts(V, t, s, d, k, N)
 
+    iterazione = 0
+
     while not g_copy.Empty():
+
+        print("iterazione", iterazione)
 
         flag, node_id = check_case1(g_copy, k, d)
 
@@ -47,6 +51,8 @@ def tpi(graph, t: dict):
                 N[u].remove(target_node_id)
 
             g_copy.DelNode(target_node_id)
+
+        iterazione += 1
 
     # print("s =>", s)
     # print("d => ", d)
