@@ -29,12 +29,12 @@ def exp_static_threshold(dataset, num_of_nodes, threshold):
     g = add_nodes(g, 1, num_of_nodes)
     g = add_edges(g, mtx)
 
-    t = generate_thresholds(g, threshold)
+    t = generate_thresholds(num_of_nodes, threshold)
 
     result = tpi(g, t)
 
     print(result)
-    print("SOMMA:", sum(result))
+    print("SOMMA:", sum(result.values()))
 
 
 def exp_degree_proportional_threshold(dataset, num_of_nodes, i):
@@ -49,7 +49,7 @@ def exp_degree_proportional_threshold(dataset, num_of_nodes, i):
     result = tpi(g, t)
 
     print(result)
-    print("> COSTO TOT:", sum(result))
+    print("> COSTO TOT:", sum(result.values()))
 
 
 def exp_dd_static_threshold(dataset, num_of_nodes, threshold):
@@ -61,7 +61,7 @@ def exp_dd_static_threshold(dataset, num_of_nodes, threshold):
     for i in range(10):
         g = dd_algorithm(mtx, num_of_nodes, edges_prob, time.time())
 
-        t = generate_thresholds(g, threshold)
+        t = generate_thresholds(num_of_nodes, threshold)
 
         result = tpi(g, t)
         results[i] = sum(result.values())
@@ -91,11 +91,10 @@ def exp_dd_degree_proportional_threshold(dataset, num_of_nodes, threshold):
 def main():
     num_of_nodes = 2970
     dataset = "dataset/socfb-Wellesley22.mtx"
-
+    # exp_static_threshold(dataset, num_of_nodes, 1)
     # exp_degree_proportional_threshold(dataset, num_of_nodes, 2)
-    # exp_dd_static_threshold(dataset, num_of_nodes, 1)
-    # exp_dd_static_threshold(dataset, num_of_nodes, 1)
-    exp_dd_degree_proportional_threshold(dataset, num_of_nodes, 1)
+    exp_dd_static_threshold(dataset, num_of_nodes, 1)
+    # exp_dd_degree_proportional_threshold(dataset, num_of_nodes, 1)
 
 
 if __name__ == '__main__':
