@@ -1,3 +1,4 @@
+import math
 import time
 
 from snap import snap
@@ -18,7 +19,7 @@ def generate_thresholds(num_of_nodes, threshold_value):
 def generate_degree_threshold(g, i):
     t = {}
     for v in g.Nodes():
-        t[v.GetId()] = round(v.GetDeg() / i)
+        t[v.GetId()] = math.ceil(v.GetDeg() / i) + 1
     return t
 
 
@@ -89,12 +90,12 @@ def exp_dd_degree_proportional_threshold(dataset, num_of_nodes, threshold):
 
 
 def main():
-    num_of_nodes = 2970
-    dataset = "dataset/socfb-Wellesley22.mtx"
+    num_of_nodes = 15126
+    dataset = "dataset/socfb-Harvard1.mtx"
     # exp_static_threshold(dataset, num_of_nodes, 1)
-    # exp_degree_proportional_threshold(dataset, num_of_nodes, 2)
-    exp_dd_static_threshold(dataset, num_of_nodes, 1)
-    # exp_dd_degree_proportional_threshold(dataset, num_of_nodes, 1)
+    exp_degree_proportional_threshold(dataset, num_of_nodes, 2)
+    # exp_dd_static_threshold(dataset, num_of_nodes, 1)
+    # exp_dd_degree_proportional_threshold(dataset, num_of_nodes, 2)
 
 
 if __name__ == '__main__':
