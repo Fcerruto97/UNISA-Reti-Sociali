@@ -76,7 +76,7 @@ def exp_dd_degree_proportional_threshold(dataset, num_of_nodes, threshold):
     edges_prob = generate_edges_prob(42, mtx)
 
     results = {}
-    for i in range(10):
+    for i in range(2, 12):
         g = dd_algorithm(mtx, num_of_nodes, edges_prob, time.time())
 
         t = generate_degree_threshold(g, threshold)
@@ -94,8 +94,8 @@ def main():
 
     # exp_degree_proportional_threshold(dataset, num_of_nodes, 2)
     # exp_dd_static_threshold(dataset, num_of_nodes, 1)
-
-    exp_dd_degree_proportional_threshold(dataset, num_of_nodes, 2)  # partire da 2
+    # exp_dd_static_threshold(dataset, num_of_nodes, 1)
+    exp_dd_degree_proportional_threshold(dataset, num_of_nodes, 1)
 
 
 if __name__ == '__main__':

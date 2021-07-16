@@ -42,8 +42,7 @@ def tpi(graph, t: dict):
             argmax_dict = dict()
             for x in g_copy.Nodes():
                 node_id = x.GetId()
-                if d[node_id] != 0:
-                    argmax_dict[node_id] = (k[node_id] * (k[node_id] + 1)) / (d[node_id] * (d[node_id] + 1))
+                argmax_dict[node_id] = (k[node_id] * (k[node_id] + 1)) / (d[node_id] * (d[node_id] + 1))
 
             target_node_id = argmax_key_dict(argmax_dict)
 
